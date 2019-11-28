@@ -19,7 +19,7 @@ function fetchCustomers() {
     .then(response => response.json())
     .then(resData => setCustomers(resData.content))
 }
-useEffect( () => {
+useEffect( () => { //FIRST RENDER ONLY
     fetchCustomers()
 }, [])
 

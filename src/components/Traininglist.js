@@ -12,6 +12,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
+import Grid from '@material-ui/core/Grid';
+import AddTraining from './AddTraining';
 
 const Traininglist = () => {
 
@@ -19,21 +21,22 @@ const[trainings, setTrainings] = useState([]);
 const[open, setOpen] = useState(false);
 const[msg, setMsg] = useState("");
 const[openDialog, setOpenDialog] = useState(false);
-const[accept, setAccept] = useState(false);
+const[link, setLink] = useState("");
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
-
-function dialogConfirm() {
-    setAccept(true)
-}
-function handleClickOpenDialog() {
+/*function handleClickOpen() {
+    setOpenTrainings(true)
+}*/
+function handleClickOpenDialog(link) {
+    setLink(link)
     setOpenDialog(true)
 }
 
 function handleClose() {
     setOpen(false)
+    //setOpenTrainings(false)
 }
 function handleCloseDialog() {
     setOpenDialog(false)
@@ -41,29 +44,66 @@ function handleCloseDialog() {
 function handleCloseDialogNo() {
     setOpenDialog(false)
 }
-function handleCloseDialogYes() {
+function handleCloseDialogDelete() {
+    deleteTraining(link)
+    setLink("")
     setOpenDialog(false)
 }
+useEffect(() => { //FIRST RENDER ONLY
+    fetchTrainings()
+    //fetchCustomersTrainings()
+} ,[])
+
 
 function fetchTrainings() {
-    fetch("https://customerrest.herokuapp.com/api/trainings")
+    fetch("https://customerrest.herokuapp.com/gettrainings")
     .then(response => response.json())
     .then(resData => {
-        let content = resData.content.map(training => {
+        console.log(resData)
+        let content = resData.map(training => {
+            var customer = training.customer !== null ? `${training.customer.firstname} ${training.customer.lastname}` : "This training has no customers!"
             var date = moment(training.date)
-            return {...training, date: date.format("LLL")}
+            return {...training, date: date.format("LLL"), customer: customer}
         })
         return setTrainings(content)
     })
 }
-useEffect( () => {
-    fetchTrainings()
-} ,[])
+
+/*function fetchCustomersTrainings() {
+    fetch(trainings.links[2].href)
+    .then (response => response.json())
+    .then (data =>{
+        console.log(trainings.links[2].href)
+        return setCustomerName(data)
+    })
+    .catch(err => console.error(err))
+}
+*/
+function saveTraining(newTraining) {
+    console.log(newTraining)
+    fetch("https://customerrest.herokuapp.com/api/trainings",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newTraining)
+    }
+    )
+    .then(response => fetchTrainings())
+    .then(response => setMsg("Training added!"))
+    .then(response => setOpen(true))
+    .catch(err => console.error(err))
+}
 
 const columns = [
     {
+        Header: "Customer",
+        accessor: "customer"
+    },
+    {
         Header: "Date",
-        accessor: "date"
+        accessor: "date",
     },
     {
         Header: "Duration",
@@ -80,30 +120,32 @@ const columns = [
         width: 100,
         Cell: row =>
             <IconButton aria-label = "delete"
-            onClick = { () => deleteTraining(row.original.links[1].href)}>
+            onClick = { () => handleClickOpenDialog(row.original.links[1].href)}>
             <DeleteIcon/>
             </IconButton>
     }
 ]
 
 function deleteTraining(link) {
-     if(handleClickOpenDialog()) {
-         if(accept === true) {
             fetch(link, {method: "DELETE"})
             .then(response => fetchTrainings())
             .then(response => setMsg("Customer's training deleted!"))
             .then(response => setOpen(true))
             .catch(err => console.error(err))
             handleCloseDialog()
-        }
-     }
 }
 
 return (
     <div>
+        <Grid container>
+            <Grid item>
+                <AddTraining saveTraining = {saveTraining}/>
+            </Grid>
+        </Grid>
         <ReactTable data = {trainings} columns = {columns} filterable = {true}/>
         <Snackbar open = {open} autoHideDuration = {3000} onClose = {handleClose} message = {msg}/>
         <Dialog
+        prop={link}
         open={openDialog}
         TransitionComponent={Transition}
         keepMounted
@@ -125,7 +167,7 @@ return (
           <Button onClick={handleCloseDialogNo} color="primary">
             Sorry, my bad
           </Button>
-          <Button onClick={dialogConfirm} color="secondary">
+          <Button onClick={handleCloseDialogDelete} color="secondary">
             Delete anyway! 
           </Button>
         </DialogActions>
