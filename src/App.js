@@ -9,9 +9,11 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+import Calendar from './components/Calendar';
 
 function App() {
-  const[value, setValue] = React.useState('one');
+  const[value, setValue] = React.useState('customer');
 
   function handleChange(event, value) {
     setValue(value);
@@ -26,12 +28,14 @@ function App() {
           </Typography>
         </Toolbar>
         <Tabs value = {value} onChange = {handleChange}>
-          <Tab value = "one" label = "Customers" icon = {<PersonPinIcon />}/>
-  <Tab value = "two" label = "Trainings" icon = {<FitnessCenterIcon />}/>
+          <Tab value = "customer" label = "Customers" icon = {<PersonPinIcon />}/>
+          <Tab value = "training" label = "Trainings" icon = {<FitnessCenterIcon />}/>
+          <Tab value = "calendar" label = "Calendar" icon = {<DateRangeIcon />}/>
         </Tabs>
       </AppBar>
-      {value === 'one' && <div><Customerlist/></div>}
-      {value === 'two' && <div><Traininglist/></div>}
+      {value === 'customer' && <div><Customerlist/></div>}
+      {value === 'training' && <div><Traininglist/></div>}
+      {value === 'calendar' && <div><Calendar/></div>}
     </div>
   );
 }
