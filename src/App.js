@@ -11,7 +11,6 @@ import Tab from '@material-ui/core/Tab';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import DateRangeIcon from '@material-ui/icons/DateRange';
-import Calendar from './components/Calendar';
 
 function App() {
   const[value, setValue] = React.useState('customer');
