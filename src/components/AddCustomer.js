@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 function AddCustomer({saveCustomer}) {
     const[open, setOpen] = useState(false)
@@ -13,6 +13,9 @@ function AddCustomer({saveCustomer}) {
         firstname: "", lastname: "", streetaddress: "", postcode: "", city: "",
          email: "", phone: ""
     })
+   // const[loading, setLoading] = useState(false);
+   // const[success, setSuccess] = useState(false);
+   // const timer = React.useRef();
 
     function handleChange(event) {
         setCustomer({...customer, [event.target.name] : event.target.value})
@@ -25,8 +28,19 @@ function AddCustomer({saveCustomer}) {
     function handleClose() {
         setOpen(false)
     }
-
+   /* const buttonClassname = clsx({
+        [classes.buttonSuccess]: success,
+    }); */
+    
     function handleCloseSave() {
+       /* if(!loading) {
+            setSuccess(false);
+            setLoading(true);
+            timer.current = setTimeout( () => {
+                setSuccess(true);
+                setLoading(false);
+            }, 2000);
+        } */
         saveCustomer(customer)
         console.log(customer)
         setOpen(false)
@@ -35,6 +49,38 @@ function AddCustomer({saveCustomer}) {
             email: "", phone: ""
         })
     }
+
+   /* const useStyles = makeStyles(theme => ({
+        root: {
+          display: 'flex',
+          alignItems: 'center',
+        },
+        wrapper: {
+          margin: theme.spacing(1),
+          position: 'relative',
+        },
+        buttonSuccess: {
+          backgroundColor: green[500],
+          '&:hover': {
+            backgroundColor: green[700],
+          },
+        },
+        fabProgress: {
+          color: green[500],
+          position: 'absolute',
+          top: -6,
+          left: -6,
+          zIndex: 1,
+        },
+        buttonProgress: {
+          color: green[500],
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          marginTop: -12,
+          marginLeft: -12,
+        },
+      })); */
 
     return (
         <div style = {{margin: 10}}>
@@ -107,9 +153,9 @@ function AddCustomer({saveCustomer}) {
                         value = {customer.phone}
                     />
                 </DialogContent>
-                <DialogActions>
+                <DialogActions> 
                     <Button onClick = {handleClose} color = "primary">Cancel</Button>
-                    <Button onClick = {handleCloseSave} color = "primary">Save</Button>
+                    <Button onClick = {handleCloseSave}>Save</Button>
                 </DialogActions>
             </Dialog>
         </div>

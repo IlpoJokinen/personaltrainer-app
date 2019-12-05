@@ -9,9 +9,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 function AddTraining(props) {
     const[open, setOpen] = useState(false)
-    const[training, setTraining] = useState({
-        date: "", activity: "", duration: "", customer: props.link})
-    
+    const[training, setTraining] = useState([])
+
     function handleChange(event) {
         setTraining({...training, [event.target.name] : event.target.value})
     }   
@@ -25,12 +24,16 @@ function AddTraining(props) {
     }
 
     function handleCloseSave() {
-        props.saveTraining(training)
+        var customer = props.customer.links[1].href
+        console.log(customer)
+        const newTraining = {...training, customer: props.customer.links[1].href}
+        props.saveTraining(newTraining)
         setOpen(false)
     }
+
     return (
         <div style = {{margin:10}}>
-            <Button variant = "outlined" color = "primary" onClick = {handleClickOpen} style = {{marginLeft: 670}}>NEW TRAINING</Button>
+            <Button variant = "outlined" color = "primary" onClick = {handleClickOpen} size="small">ADD TRAINING</Button>
             <Dialog open = {open} onClose = {handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id = "form-dialog-title">Add a new training to a customer</DialogTitle>
                 <DialogContent>
@@ -61,15 +64,6 @@ function AddTraining(props) {
                         fullWidth
                         onChange = {event => handleChange(event)}
                         value = {training.duration}
-                    />
-                      <TextField
-                        autoFocus
-                        margin="dense"
-                        name="customer"
-                        label="Customer"
-                        fullWidth
-                        onChange = {event => handleChange(event)}
-                        value = {training.customer}
                     />
                 </DialogContent>
                 <DialogActions>

@@ -7,6 +7,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import EditCustomer from './Editcustomer';
 import Grid from '@material-ui/core/Grid';
 import AddCustomer from './AddCustomer';
+import AddTraining from './AddTraining';
 
 const Customerlist = () => {
 
@@ -40,6 +41,22 @@ function saveCustomer(newCustomer){
     .catch(err => console.error(err))
 }
 
+function saveTraining(newTraining) {
+    console.log(newTraining)
+    fetch("https://customerrest.herokuapp.com/api/trainings",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newTraining)
+    }
+    )
+    .then(response => setMsg("Training added!"))
+    .then(response => setOpen(true))
+    .catch(err => console.error(err))
+}
+
 const columns = [
     {
         Header: "Firstname",
@@ -68,6 +85,13 @@ const columns = [
     {
         Header: "Phone",
         accessor: "phone"
+    },
+    {
+        accessor: "",
+        filterable: false,
+        sortable: false,
+        width: 150,
+        Cell: row => <AddTraining saveTraining = {saveTraining} customer = {row.original} />
     },
     {
         accessor: "",
