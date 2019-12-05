@@ -15,7 +15,7 @@ const[customers, setCustomers] = useState([]);
 const[open, setOpen] = useState(false);
 const[msg, setMsg] = useState("");
 
-function fetchCustomers() {
+function fetchCustomers() { //Get customer obj's from api
     fetch("https://customerrest.herokuapp.com/api/customers")
     .then(response => response.json())
     .then(resData => setCustomers(resData.content))
@@ -24,7 +24,7 @@ useEffect( () => { //FIRST RENDER ONLY
     fetchCustomers()
 }, [])
 
-function saveCustomer(newCustomer){
+function saveCustomer(newCustomer){ //Function to save new customer with a button in AddCustomer form
     console.log(newCustomer)
     fetch("https://customerrest.herokuapp.com/api/customers", 
     {
@@ -41,7 +41,7 @@ function saveCustomer(newCustomer){
     .catch(err => console.error(err))
 }
 
-function saveTraining(newTraining) {
+function saveTraining(newTraining) { //Function to save new training to a customer with a button in AddTraining form
     console.log(newTraining)
     fetch("https://customerrest.herokuapp.com/api/trainings",
     {
@@ -57,7 +57,7 @@ function saveTraining(newTraining) {
     .catch(err => console.error(err))
 }
 
-const columns = [
+const columns = [ //Buttons, Headers and data pointers to React Table
     {
         Header: "Firstname",
         accessor: "firstname"
@@ -87,10 +87,11 @@ const columns = [
         accessor: "phone"
     },
     {
+        Header: "ADD TRAINING",
         accessor: "",
         filterable: false,
         sortable: false,
-        width: 150,
+        width: 180,
         Cell: row => <AddTraining saveTraining = {saveTraining} customer = {row.original} />
     },
     {
@@ -123,8 +124,9 @@ function deleteCustomer(name, link) {
         .catch(err => console.error(err))
     }
 }
-function editCustomer(editedCustomer, link) {
-    fetch(link, 
+function editCustomer(editedCustomer, link) { //This take's the new credentials from EditCustomer and PUT
+                                              // the data to the given link, the link refers to certain customer
+     fetch(link, 
         {method: "PUT", headers: {
         'Content-Type': 'application/json'
         },
@@ -135,14 +137,14 @@ function editCustomer(editedCustomer, link) {
     .catch(err => console.error(err))
 }
 
-function handleClose() { 
+function handleClose() { //Closing Snackbar
     setOpen(false)
 }
 return (
     <div>
         <Grid container>
             <Grid item>
-                <AddCustomer saveCustomer = {saveCustomer}/>
+                <AddCustomer saveCustomer = {saveCustomer}/> 
             </Grid>
         </Grid>
         <ReactTable data = {customers} columns = {columns} filterable = {true}/>

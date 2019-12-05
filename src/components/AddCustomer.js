@@ -13,9 +13,6 @@ function AddCustomer({saveCustomer}) {
         firstname: "", lastname: "", streetaddress: "", postcode: "", city: "",
          email: "", phone: ""
     })
-   // const[loading, setLoading] = useState(false);
-   // const[success, setSuccess] = useState(false);
-   // const timer = React.useRef();
 
     function handleChange(event) {
         setCustomer({...customer, [event.target.name] : event.target.value})
@@ -28,19 +25,8 @@ function AddCustomer({saveCustomer}) {
     function handleClose() {
         setOpen(false)
     }
-   /* const buttonClassname = clsx({
-        [classes.buttonSuccess]: success,
-    }); */
     
     function handleCloseSave() {
-       /* if(!loading) {
-            setSuccess(false);
-            setLoading(true);
-            timer.current = setTimeout( () => {
-                setSuccess(true);
-                setLoading(false);
-            }, 2000);
-        } */
         saveCustomer(customer)
         console.log(customer)
         setOpen(false)
@@ -49,38 +35,6 @@ function AddCustomer({saveCustomer}) {
             email: "", phone: ""
         })
     }
-
-   /* const useStyles = makeStyles(theme => ({
-        root: {
-          display: 'flex',
-          alignItems: 'center',
-        },
-        wrapper: {
-          margin: theme.spacing(1),
-          position: 'relative',
-        },
-        buttonSuccess: {
-          backgroundColor: green[500],
-          '&:hover': {
-            backgroundColor: green[700],
-          },
-        },
-        fabProgress: {
-          color: green[500],
-          position: 'absolute',
-          top: -6,
-          left: -6,
-          zIndex: 1,
-        },
-        buttonProgress: {
-          color: green[500],
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          marginTop: -12,
-          marginLeft: -12,
-        },
-      })); */
 
     return (
         <div style = {{margin: 10}}>
