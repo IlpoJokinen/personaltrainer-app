@@ -52,8 +52,8 @@ function saveTraining(newTraining) {
         body: JSON.stringify(newTraining)
     }
     )
-    .then(response => setMsg("Training added!"))
     .then(response => setOpen(true))
+    .then(response => setMsg("Training added!"))
     .catch(err => console.error(err))
 }
 
