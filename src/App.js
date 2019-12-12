@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Customerlist from './components/Customerlist';
 import Traininglist from './components/Traininglist';
@@ -13,7 +13,8 @@ import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
 function App() {
-  const[value, setValue] = React.useState('customer');
+  
+  const[value, setValue] = useState('customer');
 
   function handleChange(event, value) {
     setValue(value);
@@ -37,7 +38,7 @@ function App() {
       {value === 'training' && <div><Traininglist/></div>}
       {value === 'calendar' && <div><Calendar/></div>}
     </div>
-  );
+  )
 }
 
 export default App;

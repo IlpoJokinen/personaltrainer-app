@@ -7,7 +7,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
@@ -20,10 +19,6 @@ const[open, setOpen] = useState(false);
 const[msg, setMsg] = useState("");
 const[openDialog, setOpenDialog] = useState(false);
 const[id, setId] = useState("");
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
 
 function handleClickOpenDialog(id) {
     setId(id)
@@ -110,8 +105,6 @@ return (
         <Dialog
         prop={id}
         open={openDialog}
-        TransitionComponent={Transition}
-        keepMounted
         onClose={handleCloseDialog}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
